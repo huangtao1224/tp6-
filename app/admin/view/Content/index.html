@@ -1,0 +1,179 @@
+{include file="Common/head" /}
+<div id="right">
+    <div class="layui-card">
+        <div class="layui-card-body" style="display: flex;align-items: center;justify-content: space-between;">
+            <div style="display: flex;align-items: center;">
+                <a href="javascript:;" onclick="xadmin.open('添加表单','{:url(\'admin/content/add\')}?classify_id={$classify_id}')" class="layui-btn"><i class="layui-icon"></i>添加内容</a>
+                <form action="/admin/content/imexport" method="post" enctype="multipart/form-data" style="margin-left: 20px;">
+                    <input type="hidden" name="classify_id" value="{$classify_id}">
+                    <div class="top_up layui-btn layui-btn-normal">
+                        <input type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+                        <i class="bi bi-cloud-arrow-up"></i>&nbsp;上传文件
+                    </div>
+                    <div class="file_name" style="display: inline-block;vertical-align: middle;"></div>
+                    <input class="layui-btn" type="submit" value="立即导入"/>
+                </form>
+                <a href="/simple.xls" class="layui-btn" style="margin-left: 20px;"><i class="layui-icon">&#xe601;</i>导入模板</a>
+            </div>
+            <div>
+                <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;" onclick="javascript:history.back(-1);" title="返回"><i class="bi bi-arrow-left" style="line-height:30px"></i></a>
+                <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;" onclick="window.location.reload();" title="刷新"><i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
+            </div>
+        </div>
+        <div class="layui-card-body layui-table-body visible">
+            <form class="layui-form">
+                <input type="hidden" name="classify_id" value="{$classify_id}">
+                <table class="layui-table layui-form">
+                    <thead>
+                    <tr>
+                        <th width="80">
+                            <input type="checkbox" lay-skin="primary" lay-filter="choseAll" title="全选" class="choseAll">
+                        </th>
+                        {volist name="input" id="vo"}
+                        <th>{$vo.input_name}</th>
+                        {/volist}
+                        <th>归属栏目</th>
+                        {notempty name="$childType"}
+                        <th>子栏目</th>
+                        {/notempty}
+                        <th width="160">排序</th>
+                        <th width="200">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody class="x-cate">
+                    {volist name="list" id="vo"}
+                    <tr>
+                        <td>
+                            <input name="content_id[]" type="hidden" value="{$vo[$table_id]}" />
+                            <input type="hidden" name="type_id[]" value="{$type_id}">
+                            <input type="checkbox" lay-filter="child" name="child[]" lay-skin="primary" title="{$vo[$table_id]}" value="{$vo[$table_id]}" class="child">
+                        </td>
+                        {volist name="input" id="vo2"}
+                        <td>
+                            {switch vo2.input_type_id}
+                            {case 1}
+                            <!--输入框-->
+                            <input name="{$vo2.field_name}[]" type="text" value="{$vo[$vo2.field_name]}" autocomplete="off" class="layui-input"/>
+                            {/case}
+                            {case 2}
+                            <!--多行框-->
+                            {$vo[$vo2.field_name]}
+                            {/case}
+                            {case 3}
+                            <!--智能口-->
+                            {$vo[$vo2.field_name]}
+                            {/case}
+                            {case 4}
+                            <!--多选框-->
+                            {$vo[$vo2.field_name]}
+                            {/case}
+                            {case 5}
+                            <!--单选框-->
+                            {$vo[$vo2.field_name]}
+                            {/case}
+                            {case 6}
+                            <!--下拉框-->
+                            <select name="{$vo2.field_name}[]">
+                                <option value="">请选择</option>
+                                {volist name="vo2.site_subclass" id="vo3"}
+                                <option value="{$vo3.input_value}" {$vo[$vo2.field_name]==$vo3.input_value?'selected':''}>{$vo3.input_name}</option>
+                                {/volist}
+                            </select>
+                            {/case}
+                            {case 7}
+                            <!--上传口-->
+                            {notempty name="$vo[$vo2.field_name]"}
+                            <a href="__ROOT__{$vo[$vo2.field_name]}"><img src="__ROOT__{$vo[$vo2.field_name]}" style="width: 50px;height: 30px;"></a>
+                            {/notempty}
+                            {/case}
+                            {case 8}
+                            <!--日期框-->
+                            {notempty name="$vo[$vo2.field_name]"}
+                            {$vo[$vo2.field_name]|date='Y-m-d H:i:s'}
+                            {/notempty}
+                            {/case}
+                            {case 9}
+                            大文件
+                            {/case}
+                            {case 10}
+                            {$vo[$vo2.field_name]}
+                            {/case}
+                            {/switch}
+                        </td>
+                        {/volist}
+                        <td style="font-weight: bold;color:#000;">{$classify_name}</td>
+                        {notempty name="$childType"}
+                        <td>
+                            {volist name="$vo.child" id="child"}
+                            <a href="/admin/content/apply/?content_id={$vo[$table_id]}&type_id={$child.type_id}" class="layui-btn layui-btn layui-btn-normal"><i class="layui-icon layui-icon-list"></i>{$child.type_name}({$child.count})</a>
+                            {/volist}
+                        </td>
+                        {/notempty}
+                        <td><input name="date[]" type="text" value="{$vo.date|date='Y-m-d H:i:s'}" autocomplete="off" class="layui-input"/></td>
+                        <td>
+                            <button type="button" class="layui-btn layui-btn-normal layui-btn-xs layui-btn2" onclick="xadmin.open('修改','{:url(\'admin/content/edit\')}?content_id={$vo[$table_id]}&type_id={$vo.type_id}')"><i class="layui-icon"></i>修改</button>
+                            <button class="layui-btn-danger layui-btn layui-btn-xs layui-btn2" type="button" onclick="content_del(this,'{:url(\'/admin/content/del_save\')}','{$vo[$table_id]}','{$type_id}','{$classify_id}')"><i class="layui-icon"></i>删除</button>
+                        </td>
+                    </tr>
+                    {/volist}
+                    </tbody>
+                </table>
+
+                <div class="layui-form-item btn_box">
+                    {if $functionSwitch.batch_move==1}
+                    <select name="batch_move">
+                        <option value="">批量移动</option>
+                        {volist name="similar" id="vo"}
+                        <option value="{$vo.classify_id}" {if condition="$vo.classify_id eq $classify_id"} disabled {/if}>{$vo.classify_name}</option>
+                        {/volist}
+                    </select>
+                    {/if}
+                    {if $functionSwitch.batch_copy==1}
+                    <select name="batch_copy">
+                        <option value="">批量复制</option>
+                        {volist name="similar" id="vo"}
+                        <option value="{$vo.classify_id}">{$vo.classify_name}</option>
+                        {/volist}
+                    </select>
+                    {/if}
+                    {if $functionSwitch.batch_delete==1}
+                    <select name="batch_delete">
+                        <option value="">批量删除</option>
+                        <option value="1">删除选中数据</option>
+                        <option value="2">全部数据删除</option>
+                    </select>
+                    {/if}
+                    <button class="layui-btn" lay-submit lay-filter="batch_edit_save" data-url="/admin/content/batch_edit_save">立即提交</button>
+                    <!--<button type="reset" class="layui-btn layui-btn-primary">重置</button>-->
+                </div>
+                {if $functionSwitch.xls_content==1}
+                <div class="layui-form-item btn_box">
+                    <select lay-filter="xls_content" id="xls_content">
+                        <option value="">批量导出</option>
+                        <option value="1">导出选中数据及字段</option>
+                        <option value="2">导出全部数据及字段</option>
+                        <option value="3">导出所有数据</option>
+                        {/volist}
+                    </select>
+                    <div class="xls_content_box" style="display: none">
+                        <input type="checkbox" lay-filter="xlsChoseAll" lay-skin="primary" title="全选" class="xlsChoseAll">
+                        {volist name="$xls_input" id="xls"}
+                        <input type="checkbox" lay-filter="xlsChild" name="xlsChild[]" lay-skin="primary" title="{$xls.input_name}" value="{$xls.input_id}" class="xlsChild">
+                        {/volist}
+                    </div>
+                    <button class="layui-btn xls_btn" type="button" data-url="/admin/content/export_save">立即导出</button>
+                </div>
+                {/if}
+                {$list|raw}
+            </form>
+        </div>
+    </div>
+</div>
+<form action="/admin/content/export_save" method="post" id="exportForm">
+    <input type="hidden" name="type_id" value="{$type_id}">
+    <input type="hidden" name="classify_id" value="{$classify_id}">
+    <input type="hidden" name="field">
+    <input type="hidden" name="xls_content">
+    <input type="hidden" name="data">
+</form>
+{include file="Common/foot" /}

@@ -1,0 +1,34 @@
+{include file="Common/head" /}
+<div id="right">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <a href="javascript:;" onclick="xadmin.open('添加地区','{:url(\'admin/region/add\')}')" class="layui-btn"><i class="layui-icon"></i>添加地区</a>
+        </div>
+        <div class="layui-card-body layui-table-body">
+            <table class="layui-table layui-form">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>名称</th>
+                    <th>省份</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody class="x-cate">
+                {volist name="list" id="vo"}
+                <tr>
+                    <td>{$vo.region_id}</td>
+                    <td>{$vo.region_name}</td>
+                    <td><a href="/admin/region/city?region_pid={$vo.region_id}&region_type={$vo.region_type}" class="layui-btn"><i class="layui-icon layui-icon-list"></i>省份列表</a></td>
+                    <td>
+                        <button class="layui-btn layui-btn-normal layui-btn-xs layui-btn2" onclick="xadmin.open('修改信息','{:url(\'admin/region/edit\')}?region_id={$vo.region_id}')"><i class="layui-icon"></i>修改</button>
+                        <button class="layui-btn-danger layui-btn layui-btn-xs layui-btn2" onclick="region_del(this,'{:url(\'admin/region/del_save\')}','{$vo.region_id}')"><i class="layui-icon"></i>删除</button>
+                    </td>
+                </tr>
+                {/volist}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{include file="Common/foot" /}

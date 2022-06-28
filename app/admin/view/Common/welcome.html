@@ -1,0 +1,129 @@
+{include file="Common/head" /}
+<div id="right">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <div class="layui-elem-quote welcome_box">
+                欢迎管理员：<span class="admin_name">管理员</span>&nbsp;&nbsp;&nbsp;当前时间:<span class="nowTime"><?php echo date('Y-m-d H:i:s',$_SERVER['REQUEST_TIME']);?></span>
+            </div>
+        </div>
+    </div>
+    <div class="layui-card">
+        <div class="layui-card-header">数据统计</div>
+        <div class="layui-card-body">
+            <ul class="layui-row layui-col-space10">
+                <li class="layui-col-md2 layui-col-xs6">
+                    <a href="javascript:;" class="card_list">
+                        <h3>文章数</h3>
+                        <p>66</p>
+                    </a>
+                </li>
+                <li class="layui-col-md2 layui-col-xs6">
+                    <a href="javascript:;" class="card_list">
+                        <h3>文章数</h3>
+                        <p>66</p>
+                    </a>
+                </li>
+                <li class="layui-col-md2 layui-col-xs6">
+                    <a href="javascript:;" class="card_list">
+                        <h3>文章数</h3>
+                        <p>66</p>
+                    </a>
+                </li>
+                <li class="layui-col-md2 layui-col-xs6">
+                    <a href="javascript:;" class="card_list">
+                        <h3>文章数</h3>
+                        <p>66</p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="layui-card">
+        <div class="layui-card-header">系统信息</div>
+        <div class="layui-card-body">
+            <table class="system_table layui-table">
+                <tr>
+                    <th>服务器语言</th>
+                    <td><?php echo $_SERVER['HTTP_ACCEPT_LANGUAGE'];?></td>
+                </tr>
+                <tr>
+                    <th>操作系统</th>
+                    <td><?php echo php_uname();?></td>
+                </tr>
+                <tr>
+                    <th>域名</th>
+                    <td><?php echo $_SERVER['HTTP_HOST'];?></td>
+                </tr>
+                <tr>
+                    <th>运行环境</th>
+                    <td><?php echo $_SERVER['SERVER_SOFTWARE'];?></td>
+                </tr>
+                <tr>
+                    <th>php版本</th>
+                    <td><?php echo PHP_VERSION;?></td>
+                </tr>
+                <tr>
+                    <th>Zend版本</th>
+                    <td><?php echo Zend_Version();?></td>
+                </tr>
+                <tr>
+                    <th>MYSQL版本</th>
+                    <td>{$mysql_version}</td>
+                </tr>
+                <tr>
+                    <th>PHP运行方式</th>
+                    <td><?php echo php_sapi_name();?></td>
+                </tr>
+                <tr>
+                    <th>上传附件</th>
+                    <td><?php echo get_cfg_var("upload_max_filesize");?></td>
+                </tr>
+                <tr>
+                    <th>最大执行时间</th>
+                    <td><?php echo (get_cfg_var("max_execution_time")?:'0').'秒';?></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="quote_box">
+        <div class="quote">
+            技术支持
+        </div>
+    </div>
+</div>
+<script>
+    function current(){
+        var d=new Date(),str='';
+        str +=d.getFullYear()+'-'; //获取当前年份
+        if(d.getMonth()+1<=9) {
+            str += ("0" + (d.getMonth()+1) + '-');
+        }else{
+            str +=d.getMonth()+1+'-';
+        }
+        if(d.getDate()<=9) {
+            str += ("0" + d.getDate() + ' ');
+        }else{
+            str +=d.getDate()+' ';
+        }
+        if(d.getHours()<=9) {
+            str += ("0" + d.getHours() + ':');
+        }else{
+            str +=d.getHours()+':';
+        }
+        if(d.getMinutes()<=9) {
+            str += ("0" + d.getMinutes() + ':');
+        }else{
+            str +=d.getMinutes()+':';
+        }
+        if(d.getSeconds()<=9) {
+            str += ("0" + d.getSeconds());
+        }else{
+            str +=d.getSeconds();
+        }
+        return str;
+    }
+    setInterval(function(){$(".nowTime").html(current)},1000);
+</script>
+{include file="Common/foot" /}
+

@@ -1,0 +1,99 @@
+<!-- 左侧菜单开始 -->
+<div class="left-nav">
+    <div id="side-nav">
+        <ul id="nav">
+            <li>
+                <a onclick="xadmin.add_tab('站点设置','{:url(\'admin/site/\')}')">
+                    <i class="bi bi-app-indicator"></i>
+                    <cite>站点设置</cite>
+                    <!--<i class="bi bi-chevron-left nav_right"></i>-->
+                </a>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <i class="bi bi-ui-checks-grid"></i>
+                    <cite>分类管理</cite>
+                    <i class="bi bi-chevron-left nav_right"></i>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <a onclick="xadmin.add_tab('顶部导航','{:url(\'admin/common/welcome\')}')">
+                            <i class="bi bi-chevron-right"></i>
+                            <cite>顶部导航</cite>
+                        </a>
+                    </li>
+                    <li>
+                        <a onclick="xadmin.add_tab('顶部导航','{:url(\'admin/common/welcome\')}')">
+                            <i class="bi bi-chevron-right"></i>
+                            <cite>首页版块</cite>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a onclick="xadmin.add_tab('会员管理','{:url(\'admin/member/\')}')">
+                    <i class="bi bi-people-fill"></i>
+                    <cite>会员管理</cite>
+                    <!--<i class="bi bi-chevron-left nav_right"></i>-->
+                </a>
+            </li>
+            <li>
+                <a onclick="xadmin.add_tab('订单管理','{:url(\'admin/order/\')}')">
+                    <i class="bi bi-cart4"></i>
+                    <cite>订单管理</cite>
+                    <!--<i class="bi bi-chevron-left nav_right"></i>-->
+                </a>
+            </li>
+            <li>
+                <a onclick="xadmin.add_tab('地址管理','{:url(\'admin/region/\')}')">
+                    <i class="bi bi-pin-map-fill"></i>
+                    <cite>地址管理</cite>
+                    <!--<i class="bi bi-chevron-left nav_right"></i>-->
+                </a>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <i class="bi bi-person-lines-fill"></i>
+                    <cite>管理员管理</cite>
+                    <i class="bi bi-chevron-left nav_right"></i>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <a onclick="xadmin.add_tab('管理员列表','{:url(\'admin/administrator/\')}')">
+                            <i class="bi bi-chevron-right"></i>
+                            <cite>管理员列表</cite>
+                        </a>
+                    </li>
+                    <li>
+                        <a onclick="xadmin.add_tab('角色管理','{:url(\'admin/administrator/role\')}')">
+                            <i class="bi bi-chevron-right"></i>
+                            <cite>角色管理</cite>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a onclick="xadmin.add_tab('高级设置','{:url(\'admin/admin_classify/\')}')">
+                    <i class="bi bi-gear-fill"></i>
+                    <cite>高级设置</cite>
+                    <!--<i class="bi bi-chevron-left nav_right"></i>-->
+                </a>
+            </li>
+            <li>
+                <a onclick="xadmin.add_tab('类型设置','{:url(\'admin/type/\')}')">
+                    <i class="bi bi-stack"></i>
+                    <cite>类型设置</cite>
+                    <!--<i class="bi bi-chevron-left nav_right"></i>-->
+                </a>
+            </li>
+            <li>
+                <a onclick="xadmin.add_tab('功能配置','{:url(\'admin/config/\')}')">
+                    <i class="bi bi-tools"></i>
+                    <cite>功能配置</cite>
+                    <!--<i class="bi bi-chevron-left nav_right"></i>-->
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- 左侧菜单结束 -->

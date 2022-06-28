@@ -1,0 +1,23 @@
+{include file="Common/head" /}
+<div id="right">
+    <div class="layui-fluid">
+        <div class="layui-row">
+            <form class="layui-form" id="layui-form">
+                <input type="hidden" name="region_id" value="{$region_id}">
+                <div class="layui-form-item">
+                    <label for="region_name" class="layui-form-label">名称</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="region_name" name="region_name" value="{$region_name}" lay-verify="required" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="*" data-url="/admin/region/edit_save">立即提交</button>
+                        <!--<button type="reset" class="layui-btn layui-btn-primary">重置</button>-->
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{include file="Common/foot" /}

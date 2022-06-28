@@ -1,0 +1,56 @@
+{include file="Common/head" /}
+<div id="right">
+    <div class="layui-card">
+        <div class="layui-card-body layui-table-body">
+            <form class="layui-form" id="layui-form">
+                <table class="layui-table layui-form">
+                    <thead>
+                    <tr>
+                        <th width="100">ID</th>
+                        <th>后台分类</th>
+                        <th>链接</th>
+                        <th>添加子分类</th>
+                        <th width="190">排序</th>
+                        <th width="100">显/隐</th>
+                        <th width="250">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody class="x-cate">
+                    {volist name="list" id="vo"}
+                    <tr cate-id="{$vo.admin_classify_id}" fid="{$vo.classify_pid}">
+                        <td>
+                            <input name="admin_classify_id[]" type="hidden" value="{$vo.admin_classify_id}" />
+                            {$vo.admin_classify_id}
+                        </td>
+                        <td status="{$vo.level_id>3?'true':'false'}">
+                            {if condition="$vo.count>0"}
+                            <i class="bi bi-caret-right-fill" style="transform: rotate(90deg);"></i>
+                            {/if}
+                            {$vo.classify_name}
+                        </td>
+                        <td><input name="classify_url[]" type="text" value="{$vo.classify_url}" autocomplete="off" class="layui-input"/></td>
+                        <td><a href="javascript:;" onclick="xadmin.open('添加子分类','{:url(\'admin/admin_classify/add\')}?admin_classify_id={$vo.admin_classify_id}')" class="layui-btn"><i class="layui-icon"></i>添加子分类</a></td>
+                        <td><input name="date[]" type="text" value="{$vo.date|date='Y-m-d H:i:s'}" autocomplete="off" class="layui-input"/></td>
+                        <td>
+                            <select name="is_delete[]">
+                                <option value="1" {$vo.is_delete=="1"?'selected':''}>显示</option>
+                                <option value="2" {$vo.is_delete=="2"?'selected':''}>隐藏</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button class="layui-btn layui-btn-normal layui-btn-xs layui-btn2" type="button" onclick="xadmin.open('修改信息','{:url(\'admin/admin_classify/edit\')}?admin_classify_id={$vo.admin_classify_id}')"><i class="layui-icon"></i>编辑</button>
+                            <button class="layui-btn-danger layui-btn layui-btn-xs layui-btn2" type="button" onclick="member_del(this,'{:url(\'/admin/adminclassify/del_save\')}','{$vo.admin_classify_id}')"><i class="layui-icon"></i>删除</button>
+                        </td>
+                    </tr>
+                    {/volist}
+                    </tbody>
+                </table>
+                <div class="layui-form-item btn_box">
+                    <button class="layui-btn" lay-submit lay-filter="batch_edit_save" data-url="/admin/admin_classify/batch_edit_save">立即提交</button>
+                    <!--<button type="reset" class="layui-btn layui-btn-primary">重置</button>-->
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{include file="Common/foot" /}

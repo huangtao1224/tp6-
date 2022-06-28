@@ -1,0 +1,43 @@
+{include file="Common/head" /}
+<div id="right">
+    <div class="layui-card">
+        <div class="layui-card-body layui-table-body">
+            <table class="layui-table layui-form">
+                <thead>
+                <tr>
+                    {volist name="input" id="vo"}
+                    <th>{$vo.input_name}</th>
+                    {/volist}
+                </tr>
+                </thead>
+                <tbody class="x-cate">
+                {volist name="list" id="vo"}
+                <tr>
+                    {volist name="input" id="vo2"}
+                    <td>
+                        {switch vo2.input_type_id}
+                        {case 1}
+                        <!--输入框-->
+                        {$vo[$vo2.field_name]}
+                        {/case}
+                        {case 7}
+                        <!--上传口-->
+                        <img src="__ROOT__{$vo[$vo2.field_name]}">
+                        {/case}
+                        {case 8}
+                        <!--日期框-->
+                        {$vo[$vo2.field_name]|date='Y-m-d H:i:s'}
+                        {/case}
+                        {default}
+                        {$vo[$vo2.field_name]}
+                        {/switch}
+                    </td>
+                    {/volist}
+                </tr>
+                {/volist}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{include file="Common/foot" /}

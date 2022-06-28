@@ -1,0 +1,78 @@
+{include file="Common/head" /}
+<div id="right">
+    <div class="layui-fluid">
+        <div class="layui-row">
+            <form class="layui-form" id="layui-form">
+                <div class="layui-form-item">
+                    <label for="classify_name" class="layui-form-label">分类名称</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="classify_name" name="classify_name" required="" lay-verify="required" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">父级</label>
+                    <div class="layui-input-inline">
+                        <select name="classify_pid" id="classify_pid" lay-filter="classify_pid">
+                            <option value="1">根目录</option>
+                            {volist name="list" id="vo"}
+                            <option value="{$vo.admin_classify_id}" {$vo.admin_classify_id==$admin_classify_id?'selected':''}>{$vo.classify_name}</option>
+                            {/volist}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-form-item icon_box" style="display: none;">
+                    <label class="layui-form-label">图标</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="classify_icon" id="classify_icon" readonly autocomplete="off" class="layui-input">
+                        <div class="classify_icon">{include file="admin_classify/icon" /}</div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label for="classify_url" class="layui-form-label">链接</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="classify_url" name="classify_url" required="" lay-verify="required" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="*" data-url="/admin/admin_classify/add_save">立即提交</button>
+                        <!--<button type="reset" class="layui-btn layui-btn-primary">重置</button>-->
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['form'], function(){
+        var $ = layui.$
+            ,form = layui.form;
+
+        form.on('select(classify_pid)', function(data){
+            if(data.value==1){
+                $('.icon_box').css('display','flex');
+            }else{
+                $('.icon_box').css('display','none');
+                $('#classify_icon').val('');
+                $('.icon').removeClass('active');
+            }
+        })
+    })
+    $('#classify_icon').click(function () {
+        $('.classify_icon').toggle();
+        $('.icon').each(function(){
+            if($(this).attr('data-icon')==$('#classify_icon').val()){
+                $(this).addClass('active').siblings().removeClass('active');
+            }
+        })
+    })
+    $('.icon').click(function () {
+        $('#classify_icon').val($(this).attr('data-icon'));
+        $('.classify_icon').hide();
+    })
+</script>
+{include file="Common/foot" /}

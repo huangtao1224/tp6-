@@ -1,0 +1,47 @@
+{include file="Common/head" /}
+<div id="right">
+    <div class="layui-fluid">
+        <div class="layui-row">
+            <form class="layui-form" id="layui-form">
+                <input type="hidden" name="type_id" value="{$type_id}">
+                <div class="layui-form-item">
+                    <label for="type_name" class="layui-form-label">表单名</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="type_name" name="type_name" readonly lay-verify="required" autocomplete="off" class="layui-input" value="{$list.type_name}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="table_name" class="layui-form-label">表名</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="table_name" name="table_name" readonly lay-verify="required" autocomplete="off" class="layui-input" value="{$list.table_name}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="page_name" class="layui-form-label">页面名</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="page_name" name="page_name" readonly autocomplete="off" class="layui-input" value="{$list.page_name}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">关联表单</label>
+                    <div class="layui-input-block">
+                        {volist name="table" id="vo"}
+                        <input type="checkbox" name="glids" lay-skin="primary" title="{$vo.type_name}({$vo.table_name})" value="{$vo.type_id}" {if condition="in_array($vo.type_id,$list.glids)"} checked {/if}>
+                        <div class="layui-unselect layui-form-checkbox" lay-skin="primary">
+                            <span>{$vo.type_name}({$vo.table_name})</span><i class="layui-icon layui-icon-ok"></i>
+                        </div>
+                        {/volist}
+                    </div>
+                    <div class="tips">*创建关联表会自动创建关联id，同时之前的操作也会自动完成（即创建关联表只需在此处选择即可）</div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="*" data-url="/admin/type/edit_save">立即提交</button>
+                        <!--<button type="reset" class="layui-btn layui-btn-primary">重置</button>-->
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{include file="Common/foot" /}

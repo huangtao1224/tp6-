@@ -1,0 +1,71 @@
+{include file="Common/head" /}
+<div class="top">
+    <a href="javascript:;" class="logo">后台管理系统</a>
+    <div class="top_li">
+        <i class="bi bi-list "></i>
+        <a class="hidden-sm" target="_blank" href="/">网站首页</a>
+        <a class="hidden-sm" href="javascript:;" onclick="cache('{:url(\'admin/index/del_cache\')}')">清除缓存</a>
+    </div>
+    <div class="user">
+        <p><a href="admin.php?m=site&a=password_edit&admin_classify_id=2">管理员</a></p>
+        <div class="skin hidden-sm">
+            <i class="bi bi-palette-fill"></i>
+            <ul>
+                <li><a href="javascript:;" data-val="default" title="默认（黑色）"><span style="background: #000"></span>默认（黑色）</a></li>
+                <li><a href="javascript:;" data-val="blue" title="蓝色"><span style="background:blue"></span>蓝色</a></li>
+                <li><a href="javascript:;" data-val="green" title="绿色"><span style="background: green"></span>绿色</a></li>
+                <li><a href="javascript:;" data-val="red" title="红色"><span style="background: red"></span>红色</a></li>
+                <li><a href="javascript:;" data-val="orange" title="橙色"><span style="background:orange"></span>橙色</a></li>
+            </ul>
+        </div>
+        <p><a href="{:url('admin/login/logout')}"><i class="bi bi-power"></i></a></p>
+    </div>
+</div>
+<script>
+    $('.skin').hover(function(){
+        $(this).children('ul').stop().slideToggle();
+    })
+    $('.skin ul li').hover(function(){
+        var color = $(this).children('a').attr('data-val');
+        if(color!='default'){
+            $(this).children('a').css('color',color);
+        }
+    },function(){
+        $(this).children('a').css('color','#000');
+    })
+    $(function(){
+        if($.cookie("bg-pic")==""||$.cookie("bg-pic")==null){
+            $('#left').removeClass('left_'+$.cookie("bg-pic"));
+        }else{
+            $('.top').addClass($.cookie("bg-pic"));
+            $('.tables tr.title').addClass($.cookie("bg-pic"));
+            $('#left').addClass('left_'+$.cookie("bg-pic"));
+        }
+        $('.skin ul li a').click(function(){
+            var color = $(this).attr("data-val");
+            $('.top').removeClass().addClass('top '+color);
+            $('.tables tr.title').removeClass().addClass('title '+color);
+            $('#left').removeClass().addClass('left_panel left_'+color);
+            $.cookie("bg-pic",color);
+        });
+    });
+    function cache(path) {
+        layer.confirm(
+            '确定要清除缓存嘛？'
+            ,function(){
+                $.ajax({
+                    type: "post",
+                    url: path,
+                    data: '',
+                    dataType:"html",
+                    success: function(htmls)
+                    {
+                        if(htmls){
+                            layer.msg('清除成功',{icon:1,time:1000});
+                        }
+                    }
+                });
+            }
+        )
+    }
+</script>

@@ -1,0 +1,100 @@
+{include file="Common/head" /}
+<style>
+    .layui-table td{border:none;}
+</style>
+<div id="right">
+    <div class="layui-card">
+        <div class="site_title">中文版</div>
+        <div class="layui-card-body layui-table-body">
+            <form class="layui-form" id="layui-form" enctype="multipart/form-data" method="post" action="/admin/site/edit_save">
+                <input type="hidden" name="type_id" value="2">
+                <input type="hidden" name="version_id" value="1">
+                <table class="layui-table layui-form">
+                    {volist name="input" id="vo"}
+                    <tr>
+                        <td class="caption">{$vo.input_name} {if condition="$vo.prompt!=''"}<i class="bi bi-question-circle-fill" lay-tips="{$vo.prompt}"></i>{/if}</td>
+                        <td>
+                            {switch vo.input_type_id}
+                            {case 1}
+                            <!--输入框-->
+                            <input name="{$vo.field_name}" type="text" value="{$site[$vo.field_name]}" autocomplete="off" class="layui-input"/>
+                            {/case}
+                            {case 2}
+                            <!--多行框-->
+                            <textarea name="{$vo.field_name}" class="layui-textarea">{$site[$vo.field_name]}</textarea>
+                            {/case}
+                            {case 3}
+                            <!--智能口-->
+                            <script type="text/javascript">
+                                KindEditor.ready(function(K){window.editor = K.create('#{$vo.site}',{afterBlur:function(){this.sync();}});});
+                            </script>
+                            <textarea id="{$vo.site}" name="{$vo.field_name}" style="width:100%;height:200px;">{$site[$vo.field_name]}</textarea>
+                            {/case}
+                            {case 4}
+                            <!--多选框-->
+                            {volist name="vo.site_subclass" id="vo2"}
+                            <input type="checkbox" name="{$vo.field_name}[]" lay-skin="primary" title="{$vo2.input_name}" value="{$vo2.input_value}" {if condition="isset($vo.site)&&(in_array($vo2.input_value,$vo.site))"} checked {/if}>
+                            {/volist}
+                            {/case}
+                            {case 5}
+                            <!--单选框-->
+                            {volist name="vo.site_subclass" id="vo2"}
+                            <input type="radio" name="{$vo.field_name}" title="{$vo2.input_name}" value="{$vo2.input_value}" {$site[$vo.field_name]==$vo2.input_value?'checked':''}>
+                            {/volist}
+                            {/case}
+                            {case 6}
+                            <!--下拉框-->
+                            <select name="{$vo.field_name}">
+                            {volist name="vo.site_subclass" id="vo2"}
+                                <option value="{$vo2.input_value}" {$site[$vo.field_name]==$vo2.input_value?'selected':''}>{$vo2.input_name}</option>
+                            {/volist}
+                            </select>
+                            {/case}
+                            {case 7}
+                            <!--上传口-->
+                            <div class="link_up_size layui-btn {$vo.note?'state':''}" data-id="{$vo.input_id}" >
+                                <input type="file" name="{$vo.field_name}">
+                                <i class="bi bi-cloud-arrow-up"></i>&nbsp;上传文件
+                            </div>
+                            <div class="layui-input-inline"></div>
+                            {notempty name='$site[$vo.field_name]'}
+                            <div class="layui-input-inline">
+                                <img src="__ROOT__{$site[$vo.field_name]}" style="width: 50px;height: 30px;">
+                                {notempty name='$vo.note'}
+                                <span>{$vo.note}</span>
+                                {/notempty}
+                            </div>
+                            <button type="button" class="layui-btn layui-btn-danger">删除</button>
+                            {/notempty}
+                            {/case}
+                            {case 8}
+                            <!--日期框-->
+                            <input name="{$vo.field_name}" type="text" value="{$site[$vo.field_name]|date='Y-m-d H:i:s'}" autocomplete="off" class="layui-input layerdate"/><i class="bi bi-calendar3"></i>
+                            {/case}
+                            {case 9}
+                            大文件
+                            {/case}
+                            {case 10}
+                            <div class="layui-form-item">
+                                <div class="layui-input-inline">
+                                    <input type="text" name="{$vo.field_name}" value="{$site[$vo.field_name]}" class="layui-input">
+                                </div>
+                                <div class="coloris"></div>
+                            </div>
+                            {/case}
+                            {/switch}
+                        </td>
+                        <td class="operate">
+                            <button type="button" class="layui-btn layui-btn-normal" class="copycode" onClick="site_children('{$vo.field_name}')">代码</button>
+                        </td>
+                    </tr>
+                    {/volist}
+                </table>
+                <div class="layui-form-item btn_box">
+                    <button class="layui-btn" type="submit">立即提交</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{include file="Common/foot" /}

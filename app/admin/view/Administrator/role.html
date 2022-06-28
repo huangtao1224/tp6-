@@ -1,0 +1,38 @@
+{include file="Common/head" /}
+<div id="right">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <a href="javascript:;" onclick="xadmin.open('添加角色','{:url(\'admin/administrator/role_add\')}')" class="layui-btn"><i class="layui-icon"></i>添加角色</a>
+        </div>
+        <div class="layui-card-body layui-table-body">
+            <table class="layui-table layui-form">
+                <thead>
+                <tr>
+                    <th width="100">ID</th>
+                    <th>角色名</th>
+                    <th>用户名</th>
+                    <th>描述</th>
+                    <th width="250">操作</th>
+                </tr>
+                </thead>
+                <tbody class="x-cate">
+                {volist name="list" id="vo"}
+                <tr>
+                    <td>{$vo.role_id}</td>
+                    <td>{$vo.role_name}</td>
+                    <td>{$vo.user}</td>
+                    <td>{$vo.role_describe}</td>
+                    <td>
+                        <button class="layui-btn layui-btn-normal layui-btn-xs layui-btn2" onclick="xadmin.open('修改信息','{:url(\'admin/administrator/role_edit\')}?role_id={$vo.role_id}')"><i class="layui-icon"></i>修改</button>
+                        <button class="layui-btn-danger layui-btn layui-btn-xs layui-btn2" onclick="member_del(this,'{:url(\'admin/administrator/del_save\')}','{$vo.role_id}')"><i class="layui-icon"></i>删除</button>
+                    </td>
+                </tr>
+                {/volist}
+                </tbody>
+            </table>
+            {$list|raw}
+        </div>
+    </div>
+
+</div>
+{include file="Common/foot" /}

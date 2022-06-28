@@ -1,0 +1,144 @@
+{include file="Common/head" /}
+<div id="right">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <a href="javascript:;" onclick="xadmin.open('添加表单','{:url(\'admin/input/add\')}?content_id={$id}')" class="layui-btn"><i class="layui-icon"></i>添加表单</a>
+            <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="javascript:history.back(-1);" title="返回"><i class="bi bi-arrow-left" style="line-height:30px"></i></a>
+            <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="window.location.reload();" title="刷新">
+                <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
+        </div>
+        <div class="layui-card-body layui-table-body">
+            <form class="layui-form" id="layui-form" style="width: 100%">
+                <table class="layui-table layui-form">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>名称</th>
+                        <th></th>
+                        <th>默认值</th>
+                        <th>提示</th>
+                        <th>备注</th>
+                        <th>颜色</th>
+                        <th>表单名</th>
+                        <th>后台</th>
+                        <th>表单类型</th>
+                        <th>数据类型</th>
+                        <th>数据长度</th>
+                        <th>列表</th>
+                        <th width="160">排序</th>
+                        <th width="160">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody class="x-cate">
+                    {volist name="list" id="vo"}
+                    <tr>
+                        <td>
+                            <input name="input_id[]" type="hidden" value="{$vo.input_id}" />
+                            {$vo.input_id}
+                        </td>
+                        <td>
+                            <input name="input_name[]" type="text" value="{$vo.input_name}" autocomplete="off" class="layui-input"/>
+                            <input name="input_value[]" type="hidden" value="{$vo.input_value}" />
+                        </td>
+                        <td>
+                            {if condition="$vo.is_parent==2"}
+                            <a href="javascript:;" onclick="xadmin.open('添加','{:url(\'admin/input/child_add\')}?input_pid={$vo.input_id}')" class="layui-btn"><i class="layui-icon"></i>添加</a>
+                            {/if}
+                        </td>
+                        <td>
+                            <input name="default_value[]" type="text" value="{$vo.default_value}" autocomplete="off" class="layui-input"/>
+                        </td>
+                        <td>
+                            <input name="prompt[]" type="text" value="{$vo.prompt}" autocomplete="off" class="layui-input"/>
+                        </td>
+                        <td>
+                            <input name="note[]" type="text" value="{$vo.note}" autocomplete="off" class="layui-input"/>
+                        </td>
+                        <td>
+                            <input name="color[]" type="text" value="{$vo.color}" autocomplete="off" class="layui-input"/>
+                        </td>
+                        <td>
+                            <input name="field_name[]" type="text" value="{$vo.field_name}" autocomplete="off" class="layui-input"/>
+                        </td>
+                        <td>
+                            <select name="edit_switch[]">
+                                <option value="1" {$vo.edit_switch=="1"?'selected':''}>隐藏</option>
+                                <option value="2" {$vo.edit_switch=="2"?'selected':''}>显示</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select name="input_type_id[]">
+                            {volist name="type_list" id="vo2"}
+                                <option value="{$vo2.input_type_id}" {$vo.input_type_id==$vo2.input_type_id?'selected':''}>{$vo2.input_type_name}</option>
+                            {/volist}
+                            </select>
+                        </td>
+                        <td>
+                            <select name="data_type_id[]">
+                                {volist name="data_list" id="vo2"}
+                                <option value="{$vo2.data_type_id}" {$vo.data_type_id==$vo2.data_type_id?'selected':''}>{$vo2.data_type_name}</option>
+                                {/volist}
+                            </select>
+                        </td>
+                        <td>
+                            <input name="data_length[]" type="text" value="{$vo.data_length}" autocomplete="off" class="layui-input"/>
+                        </td>
+                        <td>
+                            <select name="list_switch[]">
+                                <option value="1" {$vo.list_switch=="1"?'selected':''}>隐藏</option>
+                                <option value="2" {$vo.list_switch=="2"?'selected':''}>显示</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input name="date[]" type="text" value="{$vo.date|date='Y-m-d H:i:s'}" autocomplete="off" class="layui-input"/>
+                        </td>
+                        <td>
+                            <button class="layui-btn-danger layui-btn layui-btn-xs layui-btn2" type="button" onclick="member_del(this,'{:url(\'/admin/input/del_save\')}','{$vo.input_id}')"><i class="layui-icon"></i>删除</button>
+                        </td>
+                    </tr>
+                    {volist name="vo['child']" id="vo2"}
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input name="input_id[]" type="hidden" value="{$vo2.input_id}" />
+                            <input name="default_value[]" type="hidden" value="{$vo2.default_value}" />
+                            <input name="prompt[]" type="hidden" value="{$vo2.prompt}" />
+                            <input name="note[]" type="hidden" value="{$vo2.note}" />
+                            <input name="field_name[]" type="hidden" value="{$vo2.field_name}" />
+                            <input name="edit_switch[]" type="hidden" value="1" />
+                            <input name="input_type_id[]" type="hidden" value="1" />
+                            <input name="data_type_id[]" type="hidden" value="1" />
+                            <input name="list_switch[]" type="hidden" value="1" />
+                            <input name="data_length[]" type="hidden" value="{$vo2.data_length}" />
+                            {$vo2.input_id}
+                        </td>
+                        <td><input name="input_name[]" type="text" value="{$vo2.input_name}" autocomplete="off" class="layui-input"/></td>
+                        <td><input name="input_value[]" type="text" value="{$vo2.input_value}" autocomplete="off" class="layui-input"/></td>
+                        <td></td>
+                        <td></td>
+                        <td><input name="color[]" type="text" value="{$vo2.color}" autocomplete="off" class="layui-input"/></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><input name="date[]" type="text" value="{$vo2.date|date='Y-m-d H:i:s'}" autocomplete="off" class="layui-input"/></td>
+                        <td>
+                            <button class="layui-btn-danger layui-btn layui-btn-xs layui-btn2" type="button" onclick="member_del(this,'{:url(\'/admin/input/del_save\')}','{$vo2.input_id}')"><i class="layui-icon"></i>删除</button>
+                        </td>
+                    </tr>
+                    {/volist}
+                    {/volist}
+                    </tbody>
+                </table>
+                <div class="layui-form-item btn_box">
+                    <button class="layui-btn" lay-submit lay-filter="batch_edit_save" data-url="/admin/input/batch_edit_save">立即提交</button>
+                    <!--<button type="reset" class="layui-btn layui-btn-primary">重置</button>-->
+                </div>
+            </form>
+        </div>
+    </div>
+    <hr>
+</div>
+{include file="Common/foot" /}

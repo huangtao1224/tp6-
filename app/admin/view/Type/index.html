@@ -1,0 +1,48 @@
+{include file="Common/head" /}
+<div id="right">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <a href="javascript:;" onclick="xadmin.open('添加表单','{:url(\'admin/type/add\')}')" class="layui-btn"><i class="layui-icon"></i>添加表单</a>
+        </div>
+        <div class="layui-card-body layui-table-body">
+            <table class="layui-table layui-form">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>表单类型名称</th>
+                    <th>表名</th>
+                    <th>页面名</th>
+                    <th>显示</th>
+                    <th>表单设置</th>
+                    <th width="250">操作</th>
+                </tr>
+                </thead>
+                <tbody class="x-cate">
+                {volist name="table" id="vo"}
+                <tr>
+                    <td>{$vo.type_id}</td>
+                    <td>{$vo.type_name}</td>
+                    <td>{$vo.table_name}</td>
+                    <td>{$vo.page_name}</td>
+                    <td>
+                        {if condition="$vo.show_id eq 2"}
+                        <input type="checkbox" lay-skin="switch" lay-filter="show" lay-text="开启|关闭" pid="{$vo.type_id}" checked>
+                        {else /}
+                        <input type="checkbox" lay-skin="switch" lay-filter="show" lay-text="开启|关闭" pid="{$vo.type_id}">
+                        {/if}
+                    </td>
+                    <td><a href="{:url('/admin/input/')}?content_id={$vo.type_id}" class="layui-btn"><i class="layui-icon layui-icon-list"></i>表单数据</a></td>
+                    <td>
+                        {if condition="$vo.biaoshi eq 2"}
+                        <button class="layui-btn layui-btn-normal layui-btn-xs layui-btn2" onclick="xadmin.open('修改表单','{:url(\'admin/type/edit\')}?type_id={$vo.type_id}')"><i class="layui-icon"></i>修改</button>
+                        {/if}
+                        <button class="layui-btn-danger layui-btn layui-btn-xs layui-btn2" onclick="member_del(this,'{:url(\'admin/type/del_save\')}','{$vo.type_id}')"><i class="layui-icon"></i>删除</button>
+                    </td>
+                </tr>
+                {/volist}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{include file="Common/foot" /}

@@ -1,0 +1,61 @@
+{include file="Common/head" /}
+<div id="right">
+    <div class="layui-fluid">
+        <div class="layui-row">
+            <form class="layui-form" id="layui-form">
+                <input type="hidden" name="type_id" value="{$type_id}">
+                <div class="layui-form-item">
+                    <label for="input_name" class="layui-form-label">表单名</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="input_name" name="input_name" required="" lay-verify="required" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="field_name" class="layui-form-label">字段名</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="field_name" name="field_name" required="" lay-verify="required" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">表单类型</label>
+                    <div class="layui-input-inline" >
+                        <select name="input_type_id">
+                            {volist name="list" id="vo"}
+                            <option value="{$vo.input_type_id}">{$vo.input_type_name}</option>
+                            {/volist}
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">数据类型</label>
+                    <div class="layui-input-inline">
+                        <select name="data_type_id" lay-filter="data_type_id">
+                            {volist name="list2" id="vo"}
+                            <option value="{$vo.data_type_id}">{$vo.data_type_name}</option>
+                            {/volist}
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="data_length" class="layui-form-label">数据长度</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="data_length" name="data_length" required="" lay-verify="required" autocomplete="off" class="layui-input" value="0">
+                    </div>
+                </div>
+                <div class="layui-form-item decimal_point" style="display: none">
+                    <label for="decimal_point" class="layui-form-label">小数位</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="decimal_point" name="decimal_point" required="" lay-verify="required" autocomplete="off" class="layui-input" value="2">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="*" data-url="/admin/input/add_save">立即提交</button>
+                        <!--<button type="reset" class="layui-btn layui-btn-primary">重置</button>-->
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{include file="Common/foot" /}

@@ -1,0 +1,46 @@
+{include file="Common/head" /}
+<div id="right">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <a href="javascript:;" onclick="xadmin.open('添加管理员','{:url(\'admin/administrator/list_add\')}')" class="layui-btn"><i class="layui-icon"></i>添加管理员</a>
+        </div>
+        <div class="layui-card-body layui-table-body">
+            <table class="layui-table layui-form">
+                <thead>
+                <tr>
+                    <th width="100">ID</th>
+                    <th>登录名</th>
+                    <th>用户名</th>
+                    <th>角色</th>
+                    <th>状态</th>
+                    <th width="250">操作</th>
+                </tr>
+                </thead>
+                <tbody class="x-cate">
+                {volist name="list" id="vo"}
+                <tr>
+                    <td>{$vo.user_id}</td>
+                    <td>{$vo.username}</td>
+                    <td>{$vo.name}</td>
+                    <td>{$vo.role}</td>
+                    <td>
+                        {if condition="$vo.state eq 1"}
+                        <input type="checkbox" lay-skin="switch" lay-filter="user_show" lay-text="启用|禁用" pid="{$vo.user_id}" checked>
+                        {else /}
+                        <input type="checkbox" lay-skin="switch" lay-filter="user_show" lay-text="启用|禁用" pid="{$vo.user_id}">
+                        {/if}
+                    </td>
+                    <td>
+                        <button class="layui-btn layui-btn-normal layui-btn-xs layui-btn2" onclick="xadmin.open('修改信息','{:url(\'admin/administrator/list_edit\')}?user_id={$vo.user_id}')"><i class="layui-icon"></i>修改</button>
+                        <button class="layui-btn-danger layui-btn layui-btn-xs layui-btn2" onclick="member_del(this,'{:url(\'admin/administrator/del_save\')}','{$vo.user_id}')"><i class="layui-icon"></i>删除</button>
+                    </td>
+                </tr>
+                {/volist}
+                </tbody>
+            </table>
+            {$list|raw}
+        </div>
+    </div>
+
+</div>
+{include file="Common/foot" /}

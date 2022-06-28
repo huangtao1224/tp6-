@@ -1,0 +1,21 @@
+{include file="Common/top" /}
+{include file="Common/left" /}
+<!-- 右侧主体开始 -->
+<div class="page-content">
+    <div class="layui-tab tab" lay-filter="xbs_tab" lay-allowClose="true">
+        <ul class="layui-tab-title">
+            <li class="home layui-this">
+                <i class="layui-icon">&#xe68e;</i>我的桌面
+            </li>
+        </ul>
+
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <iframe src="{:url('/admin/common/welcome')}" frameborder="0" scrolling="yes"></iframe>
+            </div>
+        </div>
+        <div id="tab_show"></div>
+    </div>
+</div>
+<div class="page-content-bg"></div>
+{include file="Common/foot" /}

@@ -1,0 +1,179 @@
+{include file="Common/head" /}
+<style>#right{padding: 0;}</style>
+<div id="right">
+    <div class="layui-fluid">
+        <div class="layui-row">
+            <form class="layui-form" id="layui-form" enctype="multipart/form-data" method="post" action="/admin/classify/edit_save">
+                <input type="hidden" name="classify_id" value="{$classify.classify_id}">
+                <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+                    <ul class="layui-tab-title">
+                        <li class="layui-this">基本设置</li>
+                        <li>SEO设置</li>
+                    </ul>
+                    <div class="layui-tab-content">
+                        <div class="layui-tab-item layui-show">
+                            <div class="layui-form-item">
+                                <label for="classify_name" class="layui-form-label">分类名称</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" id="classify_name" name="classify_name" value="{$classify.classify_name}" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">父级</label>
+                                <div class="layui-input-inline">
+                                    <select name="classify_pid">
+                                        <option value="1">根目录</option>
+                                        {volist name="list" id="vo"}
+                                        <option value="{$vo.classify_id}" {if $classify.classify_pid==$vo.classify_id} selected {/if}>{$vo.classify_name}</option>
+                                        {/volist}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">类型</label>
+                                <div class="layui-input-inline">
+                                    <select name="type_id">
+                                        {volist name="type" id="vo"}
+                                        <option value="{$vo.type_id}" {if $classify.type_id==$vo.type_id} selected {/if}>{$vo.type_name}</option>
+                                        {/volist}
+                                    </select>
+                                </div>
+                            </div>
+                            {volist name="input" id="vo"}
+                            {switch vo.input_type_id}
+                            {case 1}
+                            <div class="layui-form-item">
+                                <label for="{$vo.field_name}" class="layui-form-label">{$vo.input_name}{if condition="$vo.prompt!=''"}<i class="bi bi-question-circle-fill" lay-tips="{$vo.prompt}"></i>{/if}</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" id="{$vo.field_name}" name="{$vo.field_name}" value="{$classify[$vo.field_name]}" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            {/case}
+                            {case 2}
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{$vo.input_name}</label>
+                                <div class="layui-input-inline">
+                                    <textarea name="{$vo.field_name}" value="{$classify[$vo.field_name]}" class="layui-textarea">{$classify[$vo.field_name]}</textarea>
+                                </div>
+                            </div>
+                            {/case}
+                            {case 3}
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{$vo.input_name}</label>
+                                <div class="layui-input-inline">
+                                    <script type="text/javascript">KindEditor.ready(function (K) {window.editor = K.create('#{$vo.editor}', {afterBlur: function () {this.sync();}});});</script>
+                                    <textarea id="{$vo.editor}" name="{$vo.field_name}" style="width:100%;height:200px;">{$classify[$vo.field_name]}</textarea>
+                                </div>
+                            </div>
+                            {/case}
+                            {case 4}
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{$vo.input_name}</label>
+                                <div class="layui-input-inline">
+                                    {volist name="vo.site_subclass" id="vo2"}<input type="checkbox" name="{$vo.field_name}[]" lay-skin="primary" title="{$vo2.input_name}" value="{$vo2.input_value}" {if condition="isset($vo.site)&&(in_array($vo2.input_value,$vo.site))"} checked {/if}>
+                                    {/volist}
+                                </div>
+                            </div>
+                            {/case}
+                            {case 5}
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{$vo.input_name}</label>
+                                <div class="layui-input-inline">
+                                    {volist name="vo.site_subclass" id="vo2"}
+                                    <input type="radio" name="{$vo.field_name}" title="{$vo2.input_name}" value="{$vo2.input_value}" {$classify[$vo.field_name]==$vo2.input_value?'checked':''}>
+                                    {/volist}
+                                </div>
+                            </div>
+                            {/case}
+                            {case 6}
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{$vo.input_name}</label>
+                                <div class="layui-input-inline">
+                                    <select name="{$vo.field_name}">
+                                        {volist name="vo.site_subclass" id="vo2"}
+                                        <option value="{$vo2.input_value}" {$classify[$vo.field_name]==$vo2.input_value?'selected':''}>{$vo2.input_name}</option>
+                                        {/volist}
+                                    </select>
+                                </div>
+                            </div>
+                            {/case}
+                            {case 7}
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{$vo.input_name}</label>
+                                <div class="layui-input-inline">
+                                    <div class="link_up_size layui-btn {$vo.note?'state':''}" data-id="{$vo.input_id}" >
+                                        <input type="file" name="{$vo.field_name}">
+                                        <i class="bi bi-cloud-arrow-up"></i>&nbsp;上传文件
+                                    </div>
+                                    <div class="file_name" style="display: inline-block;"></div>
+                                    {notempty name='$classify[$vo.field_name]'}
+                                    <div style="display: inline-block;">
+                                        <img src="__ROOT__{$classify[$vo.field_name]}" style="width: 50px;height: 30px;">
+                                        {notempty name='$vo.note'}
+                                        <span>{$vo.note}</span>
+                                        {/notempty}
+                                    </div>
+                                    <button type="button" class="layui-btn layui-btn-danger">删除</button>
+                                    {/notempty}
+                                </div>
+                            </div>
+                            {/case}
+                            {case 8}
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{$vo.input_name}</label>
+                                <div class="layui-input-inline">
+                                    <input name="{$vo.field_name}" type="text" value="{$classify[$vo.field_name]|date='Y-m-d H:i:s'}" autocomplete="off" class="layui-input layerdate"/><i class="bi bi-calendar3"></i>
+                                </div>
+                            </div>
+                            {/case}
+                            {case 9}
+                            大文件
+                            {/case}
+                            {case 10}
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{$vo.input_name}</label>
+                                <div class="layui-input-inline">
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="{$vo.field_name}" value="{$classify[$vo.field_name]}" class="layui-input">
+                                        </div>
+                                        <div class="coloris"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            {/case}
+                            {/switch}
+                            {/volist}
+                        </div>
+                        <div class="layui-tab-item">
+                            <div class="layui-form-item">
+                                <label for="title" class="layui-form-label">浏览器标题</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" id="title" name="title" value="{$classify.title}" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label for="keywords" class="layui-form-label">浏览器关键词</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" id="keywords" name="keywords" value="{$classify.keywords}" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label for="description" class="layui-form-label">浏览器描述</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" id="description" name="description" value="{$classify.description}" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" type="submit">立即提交</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{include file="Common/foot" /}

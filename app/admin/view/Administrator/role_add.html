@@ -1,0 +1,74 @@
+{include file="Common/head" /}
+<style>
+    .layui-form-item .layui-form-checkbox[lay-skin=primary]{margin-top: 0}
+</style>
+<div id="right">
+    <div class="layui-fluid">
+        <div class="layui-row">
+            <form class="layui-form" id="layui-form">
+                <div class="layui-form-item">
+                    <label for="role_name" class="layui-form-label">角色名</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="role_name" name="role_name" required="" lay-verify="required" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="role_describe" class="layui-form-label">描述</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="role_describe" name="role_describe" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">权限</label>
+                    <div class="layui-input-block">
+                        {volist name="admin_classify" id="vo"}
+                        <div class="perssion_box">
+                            {empty name="vo.subclass"}
+                            <div class="perssion_box_title">
+                                <input type="checkbox" lay-skin="primary" lay-filter="allChoose_{$vo.admin_classify_id}" title="{$vo.classify_name}" class="allChoose">
+                            </div>
+                            <div class="rule_box">
+                                {volist name="rule" id="vo2"}
+                                <input type="checkbox" name="rule[{$vo.admin_classify_id}]" lay-skin="primary" title="{$vo2.rule_name}" value="{$vo2.rule_id}" class="allChoose_{$vo.admin_classify_id}">
+                                {/volist}
+                            </div>
+                            {else /}
+                            <div class="perssion_box_title">
+                                <input type="checkbox" lay-skin="primary" lay-filter="allChoose_{$vo.admin_classify_id}" title="{$vo.classify_name}" class="allChoose">
+                            </div>
+                            {if $vo.admin_classify_id==3}
+                            {volist name='vo.subclass' id="vo2"}
+                            <div class="rule_box">
+                                <input type="checkbox" lay-skin="primary" lay-filter="allChoose2_{$vo2.classify_id}" title="{$vo2.classify_name}" class="allChoose_{$vo.admin_classify_id} allChoose2">
+                                {volist name="rule" id="vo3"}
+                                <input type="checkbox" name="rule2[{$vo2.classify_id}]" lay-skin="primary" title="{$vo3.rule_name}" value="{$vo3.rule_id}" class="allChoose_{$vo.admin_classify_id} allChoose2_{$vo2.classify_id}">
+                                {/volist}
+                            </div>
+                            {/volist}
+                            {else /}
+                            {volist name='vo.subclass' id="vo2"}
+                            <div class="rule_box">
+                                <input type="checkbox" lay-skin="primary" lay-filter="allChoose_{$vo2.admin_classify_id}" title="{$vo2.classify_name}" class="allChoose_{$vo.admin_classify_id} allChoose2">
+                                {volist name="rule" id="vo3"}
+                                <input type="checkbox" name="rule[{$vo2.admin_classify_id}]" lay-skin="primary" title="{$vo3.rule_name}" value="{$vo3.rule_id}" class="allChoose_{$vo.admin_classify_id} allChoose_{$vo2.admin_classify_id}">
+                                {/volist}
+                            </div>
+                            {/volist}
+                            {/if}
+                            {/empty}
+
+                        </div>
+                        {/volist}
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="*" data-url="/admin/administrator/role_add_save">立即提交</button>
+                        <!--<button type="reset" class="layui-btn layui-btn-primary">重置</button>-->
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{include file="Common/foot" /}

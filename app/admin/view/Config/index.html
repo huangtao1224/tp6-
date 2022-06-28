@@ -1,0 +1,33 @@
+{include file="Common/head" /}
+<div id="right">
+    <div class="layui-card">
+        <div class="site_title">扩展功能开关</div>
+        <div class="layui-card-body layui-table-body">
+            <table class="layui-table layui-form">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>操作类型</th>
+                    <th>状态</th>
+                </tr>
+                </thead>
+                <tbody class="x-cate">
+                {volist name="input" id="vo"}
+                <tr>
+                    <td>{$vo.input_id}</td>
+                    <td>{$vo.input_name}</td>
+                    <td>
+                        {if condition="$functionSwitch[$vo.field_name] eq 1"}
+                        <input type="checkbox" lay-skin="switch" lay-filter="function_show" lay-text="启用|禁用" pid="{$vo.input_id}" checked>
+                        {else /}
+                        <input type="checkbox" lay-skin="switch" lay-filter="function_show" lay-text="启用|禁用" pid="{$vo.input_id}">
+                        {/if}
+                    </td>
+                </tr>
+                {/volist}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>

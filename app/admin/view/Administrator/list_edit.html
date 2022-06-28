@@ -1,0 +1,56 @@
+{include file="Common/head" /}
+<div id="right">
+    <div class="layui-fluid">
+        <div class="layui-row">
+            <form class="layui-form" id="layui-form">
+                <input type="hidden" name="user_id" value="{$administrator.user_id}">
+                <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">登录名</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="username" name="username" value="{$administrator.username}" lay-verify="required" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="name" class="layui-form-label">用户名</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="name" name="name" value="{$administrator.name}" lay-verify="required" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="password" class="layui-form-label">密码</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="password" name="password" autocomplete="off" class="layui-input" >
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">角色</label>
+                    <div class="layui-input-block" id="role">
+                        {volist name="role" id="vo"}
+                        <input type="checkbox" name="role" lay-filter="role" lay-skin="primary" lay-verify="otherReq" title="{$vo.role_name}" value="{$vo.role_id}" {if condition="in_array($vo.role_id,$user_role)"} checked {/if}>
+                        <div class="layui-unselect layui-form-checkbox" lay-skin="primary">
+                            <span></span><i class="layui-icon layui-icon-ok"></i>
+                        </div>
+                        {/volist}
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">状态</label>
+                    <div class="layui-input-inline">
+                        {if condition="$administrator.state eq 1"}
+                        <input type="checkbox" name="state" lay-skin="switch" lay-text="开启|关闭" checked>
+                        {else /}
+                        <input type="checkbox" name="state" lay-skin="switch" lay-text="开启|关闭">
+                        {/if}
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="*" data-url="/admin/administrator/edit_save">立即提交</button>
+                        <!--<button type="reset" class="layui-btn layui-btn-primary">重置</button>-->
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{include file="Common/foot" /}

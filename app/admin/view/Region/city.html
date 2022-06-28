@@ -1,0 +1,41 @@
+{include file="Common/head" /}
+<div id="right">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <a href="javascript:;" onclick="xadmin.open('{$title}','{:url(\'admin/region/add\')}?region_pid={$region_pid}&region_type={$region_type}')" class="layui-btn"><i class="layui-icon"></i>{$title}</a>
+            <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="javascript:history.back(-1);" title="返回"><i class="bi bi-arrow-left" style="line-height:30px"></i></a>
+            <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="window.location.reload();" title="刷新">
+                <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
+        </div>
+        <div class="layui-card-body layui-table-body">
+            <table class="layui-table layui-form">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>名称</th>
+                    {if condition="$region_type < 3"}
+                    <th>{$title2}</th>
+                    {/if}
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody class="x-cate">
+                {volist name="list" id="vo"}
+                <tr>
+                    <td>{$vo.region_id}</td>
+                    <td>{$vo.region_name}</td>
+                    {if condition="$region_type < 3"}
+                    <td><a href="/admin/region/city?region_pid={$vo.region_id}&region_type={$region_type}" class="layui-btn"><i class="layui-icon layui-icon-list"></i>{$title2}列表</a></td>
+                    {/if}
+                    <td>
+                        <button class="layui-btn layui-btn-normal layui-btn-xs layui-btn2" onclick="xadmin.open('修改信息','{:url(\'admin/region/edit\')}?region_id={$vo.region_id}')"><i class="layui-icon"></i>修改</button>
+                        <button class="layui-btn-danger layui-btn layui-btn-xs layui-btn2" onclick="member_del(this,'{:url(\'admin/region/del_save\')}','{$vo.region_id}')"><i class="layui-icon"></i>删除</button>
+                    </td>
+                </tr>
+                {/volist}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{include file="Common/foot" /}
