@@ -3,6 +3,7 @@ declare (strict_types = 1);
 
 namespace app;
 
+use liliuwei\think\Jump;
 use think\App;
 use think\exception\ValidateException;
 use think\Validate;
@@ -11,12 +12,12 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
-
 /**
  * 控制器基础类
  */
 abstract class BaseController
 {
+
     /**
      * Request实例
      * @var \think\Request
@@ -48,6 +49,7 @@ abstract class BaseController
      */
     public function __construct(App $app)
     {
+
         $this->app     = $app;
         $this->request = $this->app->request;
 
@@ -350,7 +352,7 @@ abstract class BaseController
                 $info = "请使用'Xlsx'格式文件进行带图片上传,否则图片上传失败！";
                 $arr['code'] = 300;
                 $arr['msg'] = $info;
-                echo json_encode($arr);
+                return $arr;
                 die();
             }
 
@@ -360,35 +362,30 @@ abstract class BaseController
             }
 
             $objSpreadsheet = IOFactory::load($filename);
-
             $objWorksheet = $objSpreadsheet->getActiveSheet(0);  //getSheet(0)
             $highestRow = $objWorksheet->getHighestRow(); // 取得总行数
             $data = $objWorksheet->toArray();
-
             //$drawing 为 PhpOffice\PhpSpreadsheet\Worksheet\Drawing类的实例;   仅仅支持xlsx格式文件
-            $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
             foreach ($objWorksheet->getDrawingCollection() as $drawing) {
                 list($startColumn, $startRow) = Coordinate::coordinateFromString($drawing->getCoordinates());
-                $imageFileName = $drawing->getIndexedFilename(); //获取文件名称
-                dump($drawing);
-//                switch ($drawing->getMimeType()) {
-//                    case 'jpg':
-//                    case \PhpOffice\PhpSpreadsheet\Worksheet\MemoryDrawing::MIMETYPE_JPEG:
-//                        //$imageFileName .= '.jpg';
-//                        $source = imagecreatefromjpeg($drawing->getPath());
-//                        imagejpeg($source, $imageFilePath . $imageFileName);
-//                        break;
-//                    case \PhpOffice\PhpSpreadsheet\Worksheet\MemoryDrawing::MIMETYPE_GIF:
-//                        //$imageFileName .= '.gif';
-//                        $source = imagecreatefromgif($drawing->getPath());
-//                        imagegif($source, $imageFilePath . $imageFileName);
-//                        break;
-//                    case \PhpOffice\PhpSpreadsheet\Worksheet\MemoryDrawing::MIMETYPE_PNG:
-//                        //$imageFileName .= '.png';
-//                        $source = imagecreatefrompng($drawing->getPath());
-//                        imagepng($source, $imageFilePath . $imageFileName);
-//                        break;
-//                }
+                //$imageFileName = $drawing->getIndexedFilename(); //获取文件名称
+                $imageFileName = date('YmdHis').mt_rand(1000,9999);
+
+                switch ($drawing->getMimeType()) {
+                    case 'image/jpg':
+                    case 'image/jpeg':
+                        $imageFileName .= '.jpg';
+                        imagejpeg($drawing->getImageResource(),$imageFilePath.$imageFileName);
+                        break;
+                    case 'image/gif':
+                        $imageFileName .= '.gif';
+                        imagegif($drawing->getImageResource(),$imageFilePath.$imageFileName);
+                        break;
+                    case 'image/png':
+                        $imageFileName .= '.png';
+                        imagepng($drawing->getImageResource(),$imageFilePath.$imageFileName);
+                        break;
+                }
 //                switch ($drawing->getExtension()) {
 //                    case 'jpg':
 //                    case 'jpeg':
@@ -410,17 +407,20 @@ abstract class BaseController
                 $startColumn = ABC2decimal($startColumn);
                 $data[$startRow - 1][$startColumn] = $imageFilePath . $imageFileName;
             }
-            dump($data);die();
+            array_shift($data);
+            $arr['code'] = 200;
+            $arr['msg'] = $data;
+            return $arr;
+            die();
+            /*
             //从第二行开始
             for ($i = 1; $i <= $highestRow - 1; $i++) {
-                $add_data[$i]['name'] = $data[$i][0];
+                $add_data[$i]['goods_name'] = $data[$i][0];
                 $add_data[$i]['image'] = $data[$i][1];
             }
-            dump($add_data);die();
             //$success_count = Db::name('test')->insertAll($add_data);
             //unlink($filePath);  //删除文件
             //判断导入成功数量
-            /*
             if ($success_count == $highestRow - 1) {
                 $info = '导入成功！本次成功导入数量：' . $success_count . '条';
                 $arr['code'] = 200;
@@ -450,4 +450,12 @@ abstract class BaseController
         */
 
     }
+
+
+
+
+
+
+
+    use \liliuwei\think\Jump;
 }

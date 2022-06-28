@@ -8,6 +8,7 @@ use think\facade\View;
 
 class Content extends BaseController
 {
+
     public function index()
     {
         $classify_id = pg('classify_id');
@@ -521,15 +522,40 @@ class Content extends BaseController
     public function imexport(){
         ini_set('max_execution_time', '0');
         if($_FILES['file']['error']>0){
-            //$this->error('上传文件错误');
-            $arr['code'] = 300;
-            $arr['msg'] = '上传文件错误';
-            echo json_encode($arr);
-            die();
+            $this->error('上传文件错误');
         }
+        $success_count = 0;
         $data = $_REQUEST;
+        $classify_id = $data['classify_id'];
+        $table_name = Db::name('classify_type')->where('type_id='.$data['type_id'])->value('table_name');
         $filepath = $this->export_file($_FILES);
-        $this->importExcel($filepath);
+        $execlArr = $this->importExcel($filepath);
+        if($execlArr['code']==300){
+            $this->error($execlArr['msg']);
+        }else if($execlArr['code']==200){
+            foreach ($execlArr['msg'] as $k=>$v){
+                $linkdata['goods_name'] = $v[0];
+                $linkdata['goods_intro'] = strtotime($v[1])?:'';
+                $linkdata['goods_img'] = $v[2];
+                $linkdata['goods_type'] = strtotime($v[3])?:'';
+                $linkdata['goods_type2'] = $v[4];
+                $linkdata['goods_type3'] = $v[5];
+                $linkdata['date'] = time()+$k;
+                $linkdata['version_id'] = 1;
+                $linkdata['type_id'] = $data['type_id'];
+                $res = Db::name($table_name)->insertGetId($linkdata);
+                Db::name('relevance')->save(['classify_id'=>$classify_id,'content_id'=>$res,'type_id'=>$data['type_id']]);
+                $success_count+=1;
+            }
+            //判断导入成功数量
+            if ($success_count == count($execlArr['msg'])) {
+                $info = '导入成功！本次成功导入数量：' . $success_count . '条';
+                $this->success($info);
+            } else {
+                $info = '导入成功！本次成功导入数量：' . $success_count . '条,无效数据或已重复上传' . $execlArr['msg'] - $success_count . '条！';
+                $this->success($info);
+            }
+        }
 
     }
 

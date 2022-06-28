@@ -6,6 +6,7 @@
                 <a href="javascript:;" onclick="xadmin.open('添加表单','{:url(\'admin/content/add\')}?classify_id={$classify_id}')" class="layui-btn"><i class="layui-icon"></i>添加内容</a>
                 <form action="/admin/content/imexport" method="post" enctype="multipart/form-data" style="margin-left: 20px;">
                     <input type="hidden" name="classify_id" value="{$classify_id}">
+                    <input type="hidden" name="type_id" value="{$type_id}">
                     <div class="top_up layui-btn layui-btn-normal">
                         <input type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
                         <i class="bi bi-cloud-arrow-up"></i>&nbsp;上传文件
